@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 /**
  *
@@ -10,21 +10,46 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
  *
  */
 
-export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const lambdaHandler = async (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
     try {
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: 'hello world! part 4!',
-            }),
+                message: "hello world! part 4!"
+            })
         };
     } catch (err) {
         console.log(err);
         return {
             statusCode: 500,
             body: JSON.stringify({
-                message: 'some error happened',
-            }),
+                message: "some error happened"
+            })
+        };
+    }
+};
+
+export const lambdaHandler2 = async (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+    try {
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: "lambdaHandler2 hello!"
+            })
+        };
+    } catch (err) {
+        console.log(err);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: "some error happened"
+            })
         };
     }
 };
