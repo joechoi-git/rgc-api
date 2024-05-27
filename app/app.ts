@@ -18,7 +18,7 @@ export const lambdaHandler = async (
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: "hello world! part 4!"
+                message: "hello world! 5!"
             })
         };
     } catch (err) {
@@ -40,7 +40,7 @@ export const lambdaHandler2 = async (
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: "lambdaHandler2 hello!"
+                message: "hello world 2! 5!"
             })
         };
     } catch (err) {
