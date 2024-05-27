@@ -34,19 +34,29 @@ Resources:
         EntryPoints: 
         - app.ts
 
-  HelloWorld2Function:
+  getAllItemsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: app/
-      Handler: app.lambdaHandler2
+      Handler: app.getAllItemsHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SampleTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          SAMPLE_TABLE: !Ref SampleTable
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello2
+            Path: /concepts
             Method: get
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
@@ -56,6 +66,16 @@ Resources:
         Sourcemap: true
         EntryPoints: 
         - app.ts
+
+  SampleTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
