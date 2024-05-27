@@ -6,45 +6,19 @@ import { DynamoDBDocumentClient, PutCommand, ScanCommand } from "@aws-sdk/lib-dy
 const client = new DynamoDBClient({});
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
-// Get the DynamoDB table name from environment variables
 const tableName = "sam-app-SampleTable-1R8VRLJJZASR2"; // process.env.SAMPLE_TABLE;
-
-/**
- *
- * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
- * @param {Object} event - API Gateway Lambda Proxy Input Format
- *
- * Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
- * @returns {Object} object - API Gateway Lambda Proxy Output Format
- *
- */
-
-export const lambdaHandler = async (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
-    try {
-        return {
-            statusCode: 200,
-            body: JSON.stringify({
-                message: "hello world! 5!"
-            })
-        };
-    } catch (err) {
-        console.log(err);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({
-                message: "some error happened"
-            })
-        };
-    }
+const headers = {
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "*"
 };
 
 /**
  * A simple example includes a HTTP get method to get all items from a DynamoDB table.
  */
-export const getAllItemsHandler = async (event: APIGatewayProxyEvent) => {
+export const getAllItemsHandler = async (
+    event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
     if (event.httpMethod !== "GET") {
         throw new Error(`getAllItems only accept GET method, you tried: ${event.httpMethod}`);
     }
@@ -61,13 +35,8 @@ export const getAllItemsHandler = async (event: APIGatewayProxyEvent) => {
         const data = await ddbDocClient.send(new ScanCommand(params));
         const items = data.Items;
         const response = {
+            headers: headers,
             statusCode: 200,
-            /*
-            headers: {
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "*"
-            }, */
             body: JSON.stringify(items)
         };
         console.info(
@@ -77,6 +46,7 @@ export const getAllItemsHandler = async (event: APIGatewayProxyEvent) => {
     } catch (err) {
         console.error("Error", err);
         return {
+            headers: headers,
             statusCode: 400,
             body: JSON.stringify(err)
         };
@@ -86,7 +56,9 @@ export const getAllItemsHandler = async (event: APIGatewayProxyEvent) => {
 /**
  * A simple example includes a HTTP post method to add one item to a DynamoDB table.
  */
-export const postItemHandler = async (event: APIGatewayProxyEvent) => {
+export const postItemHandler = async (
+    event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
     if (event.httpMethod !== "POST") {
         throw new Error(
             `putMethod only accepts PUT method, you tried: ${event.httpMethod} method.`
@@ -121,6 +93,7 @@ export const postItemHandler = async (event: APIGatewayProxyEvent) => {
         const data = await ddbDocClient.send(new PutCommand(params));
         console.log("Success - item added or updated", data);
         const response = {
+            headers: headers,
             statusCode: 200,
             body: JSON.stringify(body)
         };
@@ -131,6 +104,7 @@ export const postItemHandler = async (event: APIGatewayProxyEvent) => {
     } catch (err) {
         console.error("Error", err);
         return {
+            headers: headers,
             statusCode: 400,
             body: JSON.stringify(err)
         };
