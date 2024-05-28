@@ -69,7 +69,7 @@ export const postItemHandler = async (
     }
     console.info("received:", event);
 
-    // Get id and name from the body of the request
+    // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property
     const body = JSON.parse(event?.body?.toString() || "");
     const id = body.id;
     const displayName = body?.displayName || "";
@@ -77,9 +77,6 @@ export const postItemHandler = async (
     const parentIds = body?.parentIds || "";
     const childIds = body?.childIds || "";
     const alternateNames = body?.alternateNames || "";
-
-    // Creates a new item, or replaces an old item with a new item
-    // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property
     const params = {
         TableName: tableName,
         Item: {
@@ -127,12 +124,9 @@ export const deleteItemHandler = async (
     }
     console.info("received:", event);
 
-    // Get id and name from the body of the request
+    // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.DeleteItem.html
     const body = JSON.parse(event?.body?.toString() || "");
     const id = body.id;
-
-    // Creates a new item, or replaces an old item with a new item
-    // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property
     const params = {
         TableName: tableName,
         Key: {
@@ -157,7 +151,7 @@ export const deleteItemHandler = async (
         return {
             headers: headers,
             statusCode: 400,
-            body: JSON.stringify(err)
+            body: JSON.stringify([err, params])
         };
     }
 };
