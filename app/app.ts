@@ -2,7 +2,12 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 // Create a DocumentClient that represents the query to add an item
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, PutCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
+import {
+    DeleteCommand,
+    DynamoDBDocumentClient,
+    PutCommand,
+    ScanCommand
+} from "@aws-sdk/lib-dynamodb";
 const client = new DynamoDBClient({});
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
@@ -60,9 +65,7 @@ export const postItemHandler = async (
     event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
     if (event.httpMethod !== "POST") {
-        throw new Error(
-            `putMethod only accepts PUT method, you tried: ${event.httpMethod} method.`
-        );
+        throw new Error(`postItem only accepts PUT method, you tried: ${event.httpMethod} method.`);
     }
     console.info("received:", event);
 
@@ -92,6 +95,54 @@ export const postItemHandler = async (
     try {
         const data = await ddbDocClient.send(new PutCommand(params));
         console.log("Success - item added or updated", data);
+        const response = {
+            headers: headers,
+            statusCode: 200,
+            body: JSON.stringify(body)
+        };
+        console.info(
+            `response from: ${event.path} statusCode: ${response.statusCode} body: ${response.body}`
+        );
+        return response;
+    } catch (err) {
+        console.error("Error", err);
+        return {
+            headers: headers,
+            statusCode: 400,
+            body: JSON.stringify(err)
+        };
+    }
+};
+
+/**
+ * A simple example includes a HTTP post method to add one item to a DynamoDB table.
+ */
+export const deleteItemHandler = async (
+    event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+    if (event.httpMethod !== "DELETE") {
+        throw new Error(
+            `deleteItem only accepts DELETE method, you tried: ${event.httpMethod} method.`
+        );
+    }
+    console.info("received:", event);
+
+    // Get id and name from the body of the request
+    const body = JSON.parse(event?.body?.toString() || "");
+    const id = body.id;
+
+    // Creates a new item, or replaces an old item with a new item
+    // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property
+    const params = {
+        TableName: tableName,
+        Key: {
+            id: id
+        }
+    };
+
+    try {
+        const data = await ddbDocClient.send(new DeleteCommand(params));
+        console.log("Success - item deleted", data);
         const response = {
             headers: headers,
             statusCode: 200,
