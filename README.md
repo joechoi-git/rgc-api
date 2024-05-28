@@ -1,7 +1,7 @@
 # rgc-api
 
 This project was bootstrapped with [AWS Serverless Application Model Command Line Interface (AWS SAM CLI)](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html).
-This is a Node.js app that provides REST API. It is hosted on [AWS Lambda](https://aws.amazon.com/lambda/features/) at <https://v936r8sd70.execute-api.us-west-2.amazonaws.com/Prod/concepts>.
+This is a containerized Node.js app that provides a RESTful API and stores its data in DynamoDB. It is hosted on [AWS Lambda](https://aws.amazon.com/lambda/features/) at <https://v936r8sd70.execute-api.us-west-2.amazonaws.com/Prod/concepts>.
 
 ## Stack
 

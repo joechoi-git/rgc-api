@@ -11,7 +11,7 @@ import {
 const client = new DynamoDBClient({});
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
-const tableName = "sam-app-SampleTable-1R8VRLJJZASR2"; // process.env.SAMPLE_TABLE;
+const tableName = "sam-app-SampleTable-1R8VRLJJZASR2"; // TO DO: move this to an env variable
 const headers = {
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Origin": "*",
@@ -19,7 +19,7 @@ const headers = {
 };
 
 /**
- * A simple example includes a HTTP get method to get all items from a DynamoDB table.
+ * Retrieve all items in DynamoDB
  */
 export const getItemsHandler = async (
     event: APIGatewayProxyEvent
@@ -59,7 +59,7 @@ export const getItemsHandler = async (
 };
 
 /**
- * A simple example includes a HTTP post method to add one item to a DynamoDB table.
+ * Add or update an item in DynamoDB
  */
 export const postItemHandler = async (
     event: APIGatewayProxyEvent
@@ -112,7 +112,7 @@ export const postItemHandler = async (
 };
 
 /**
- * A simple example includes a HTTP post method to add one item to a DynamoDB table.
+ * Delete an item in DynamoDB
  */
 export const deleteItemHandler = async (
     event: APIGatewayProxyEvent
