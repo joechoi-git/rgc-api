@@ -14,11 +14,11 @@ Globals:
           AllowOrigin: "'*'"
 
 Resources:
-  getAllItemsFunction:
+  getItemsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: app/
-      Handler: app.getAllItemsHandler
+      Handler: app.getItemsHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -129,12 +129,12 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  getAllItemsFunctionUrl:
+  getItemsFunctionUrl:
     Description: "API Gateway endpoint URL"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
-  getAllItemsFunctionArn:
+  getItemsFunctionArn:
     Description: "Lambda Function ARN"
-    Value: !GetAtt getAllItemsFunction.Arn
-  getAllItemsFunctionIamRole:
+    Value: !GetAtt getItemsFunction.Arn
+  getItemsFunctionIamRole:
     Description: "Implicit IAM Role"
-    Value: !GetAtt getAllItemsFunctionRole.Arn
+    Value: !GetAtt getItemsFunctionRole.Arn

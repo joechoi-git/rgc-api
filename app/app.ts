@@ -21,13 +21,13 @@ const headers = {
 /**
  * A simple example includes a HTTP get method to get all items from a DynamoDB table.
  */
-export const getAllItemsHandler = async (
+export const getItemsHandler = async (
     event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
     if (event.httpMethod !== "GET") {
-        throw new Error(`getAllItems only accept GET method, you tried: ${event.httpMethod}`);
+        throw new Error(`getItems only accept GET method, you tried: ${event.httpMethod}`);
     }
-    console.info("received:", event);
+    console.info("received getItems", event);
 
     // get all items from the table (only first 1MB data, you can use `LastEvaluatedKey` to get the rest of data)
     // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#scan-property
@@ -67,7 +67,7 @@ export const postItemHandler = async (
     if (event.httpMethod !== "POST") {
         throw new Error(`postItem only accepts PUT method, you tried: ${event.httpMethod} method.`);
     }
-    console.info("received:", event);
+    console.info("received postItem", event);
 
     // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#put-property
     const body = JSON.parse(event?.body?.toString() || "");
@@ -122,7 +122,7 @@ export const deleteItemHandler = async (
             `deleteItem only accepts DELETE method, you tried: ${event.httpMethod} method.`
         );
     }
-    console.info("received:", event);
+    console.info("received deleteItem", event);
 
     // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.DeleteItem.html
     const body = JSON.parse(event?.body?.toString() || "");
