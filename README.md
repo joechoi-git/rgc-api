@@ -29,19 +29,30 @@ sam deploy
 
 ## Available API Endpoints
 
-### GET `https://v936r8sd70.execute-api.us-west-2.amazonaws.com/Prod/concepts`
+### Retrieve all concepts
 
-Retrieves all concepts.
+```bash
+curl https://v936r8sd70.execute-api.us-west-2.amazonaws.com/Prod/concepts
+```
 
-### POST `https://v936r8sd70.execute-api.us-west-2.amazonaws.com/Prod/concepts`
+### Add or update a concept
 
-Adds or updates a concept.
+```bash
+curl -X POST https://v936r8sd70.execute-api.us-west-2.amazonaws.com/Prod/concepts \
+     -H "Content-Type: application/json" \
+     -d '{"id":"1", "displayName":"Some name",...}'
+```
 
-### DELETE `https://v936r8sd70.execute-api.us-west-2.amazonaws.com/Prod/concepts`
+### Delete a concept
 
-Removes a concept.
+```bash
+curl -X DELETE https://v936r8sd70.execute-api.us-west-2.amazonaws.com/Prod/concepts \
+     -H "Content-Type: application/json" \
+     -d '{"id":"1"}'
+```
 
 ## Add a resource to your application
+
 The application template uses AWS Serverless Application Model (AWS SAM) to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in [the SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
 
 ## Fetch, tail, and filter Lambda function logs
